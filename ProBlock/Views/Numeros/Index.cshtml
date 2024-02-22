@@ -1,0 +1,83 @@
+﻿@model IEnumerable<ProBlock.Entities.Numero>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Numero - Procon</h1>
+
+<p>
+    <a class="nav-link text-blue" asp-area="" asp-controller="Numeros" asp-action="Create">Create</a>
+</p>
+
+<h6>
+    Os números pesquisados não podem conter espaços ou caracteres especiais.
+    <br><br>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Ex errado:</strong> (11) 99999-9999
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+    </div>
+    <br>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Ex certo:</strong> 11999999999
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+    </div>
+</h6>
+
+<p>
+    Pesquisar por Numero 
+    @using(Html.BeginForm("Index", "Numeros", FormMethod.Get))
+    {
+        @Html.TextBox("Pesquisa")
+        <input class="btn-primary" type="submit" value="Pesquisar" />
+    }
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Número</th>
+            <th>Data de Cadastro no Procon</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Any()) // Verifica se há algum resultado no modelo
+        {
+            var resultado = Model.First(); // Acessa o primeiro resultado
+
+            <tr>
+                <td>@resultado.Telefone</td>
+                <td>@resultado.DataDeCadastro</td>
+                <td style="width: 30%">
+                    @if (!string.IsNullOrEmpty(ViewBag.BloqueioMessage))
+                    {
+                        <div class="alert alert-info" style="color: white; background-color: red;">
+                            @ViewBag.BloqueioMessage
+                        </div>
+                    }
+                </td>
+            </tr>
+        }
+        else if (string.IsNullOrEmpty(ViewBag.BloqueioMessage)) // Se não houver resultados e ViewBag.BloqueioMessage estiver vazia
+        {
+            <tr>
+                <td colspan="2"></td> <!-- Células vazias -->
+                <td style="color: green;">
+                    Liberado para acionamento.
+                </td>
+            </tr>
+        }
+
+    </tbody>
+ <table/>
+    <div class="alert alert-info" style="color: white; background-color: #0000FF;">
+        <p>
+            @ViewBag.Termo
+        </p>
+    </div>
+<h3>
+    @ViewBag.Name
+</h3>
+
+
+

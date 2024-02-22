@@ -1,0 +1,87 @@
+﻿@model X.PagedList.IPagedList<ProBlock.Entities.PesquisaNumero>
+@using Azure.Core
+@using X.PagedList.Mvc.Core
+@using X.PagedList.Web.Common
+
+<h1>Histórico de pesquisas: </h1>
+
+<p>
+    Pesquisar por Numero
+    @using (Html.BeginForm("Index", "AdminPesquisas", FormMethod.Get))
+    {
+        @Html.TextBox("Pesquisa")
+        <input class="btn-primary" type="submit" value="Pesquisar" />
+    }
+</p>
+
+<button class="btn btn-primary responsive-button" onclick="window.location.href='@Url.Action("ExportFiltradoPorData", "AdminPesquisas", new { dataInicio = ViewBag.DataInicio, dataFim = ViewBag.DataFim })'">
+    <img src="~/css/txt.png" alt="Texto Alternativo da Imagem" class="img-fluid mr-1" style="max-width: 30px; height: auto;" />
+    Exportar Histórico em TXT
+</button>
+
+<button class="btn btn-primary bg-success responsive-button" onclick="window.location.href='@Url.Action("ExportarCSV", "AdminPesquisas", new { dataInicio = ViewBag.DataInicio, dataFim = ViewBag.DataFim })'">
+    <img src="~/css/csv.png" alt="Texto Alternativo da Imagem" class="img-fluid mr-1" style="max-width: 30px; height: auto;" />
+    Exportar Histórico em CSV
+</button>
+
+<div class="filtro-data" style="margin-left: 650px; margin-top: -90px;">
+    <h2>Filtrar por Data</h2>
+    <form action="/AdminPesquisas/FiltrarPorData" method="get">
+        <label>Data Início:</label>
+        <input type="date" name="dataInicio" value="@ViewBag.DataInicio">
+
+        <label>Data Fim:</label>
+        <input type="date" name="dataFim" value="@ViewBag.DataFim">
+
+        <button class="btn-primary" type="submit">Filtrar</button>
+    </form>
+</div>
+
+<br>
+
+@if (!string.IsNullOrEmpty(ViewBag.BloqueioMessage))
+{
+    <div class="alert alert-info" style="color: black; background-color: green;">
+        @ViewBag.BloqueioMessage
+    </div>
+}
+else
+{
+    <div class="alert alert-info" style="color: black; background-color: red;">
+        @ViewBag.AnyResult
+    </div>
+}
+
+<table class="table" id="resultsTable">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Número de telefone pesquisado</th>
+            <th>Usuário</th>
+            <th>Data e hora</th>
+            <!-- Outras colunas conforme necessário -->
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var resultado in Model)
+        {
+            <tr>
+                <td>@resultado.Id</td>
+                <td>@resultado.NumeroTelefone</td>
+                <td>@resultado.ResultadoPesquisa</td>
+                <td>@resultado.Detalhes</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div id="pagination" class="text-center">
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, Pesquisa = ViewContext.HttpContext.Request.Query["Pesquisa"] }),
+        new PagedListRenderOptions
+        {
+            UlElementClasses = new[] { "pagination" },
+            LiElementClasses = new[] { "page-item" },
+            PageClasses = new[] { "page-link" }
+        }
+    )
+</div>

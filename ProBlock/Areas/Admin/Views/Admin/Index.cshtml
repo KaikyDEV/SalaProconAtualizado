@@ -1,0 +1,25 @@
+﻿@model IEnumerable<ProBlock.Entities.PesquisaNumero>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="container-fluid">
+    <div class="row justify-content-center mt-3">
+        <div class="col-md-4 mb-3">
+            <a class="nav-link text-blue" asp-area="" asp-controller="Home" asp-action="Home">Home</a>
+        </div>
+        <div class="col-md-4 mb-3">
+            <a class="nav-link text-white bg-primary d-block py-3 text-center" asp-area="Admin" asp-controller="AdminRoles" asp-action="Index">Gerenciar Admins</a>
+        </div>
+        <div class="col-md-4 mb-3">
+            <a class="nav-link text-white bg-primary d-block py-3 text-center" asp-area="Admin" asp-controller="AdminUsers" asp-action="Index">Gerenciar Usuários</a>
+        </div>
+        <div class="col-md-4 mb-3">
+            <a class="nav-link text-white bg-primary d-block py-3 text-center" asp-area="Admin" asp-controller="AdminPesquisas" asp-action="Index">Histórico de Pesquisas</a>
+        </div>
+    </div>
+</div>
+
+<div class="container text-center">
+    <img src="~/css/SalaProcon ADM.png" class="img-fluid" style="max-width: 570px;" />
+</div>
